@@ -18,12 +18,11 @@ This project uses:
 
 ### Manual install
 
-#### Using requeriments.txt
+#### Using requirements.txt
 
-1.
-2.
-3.
-4.
+```sh
+$ pip install -r requirements.txt
+```
 
 #### Manual
 
@@ -34,17 +33,23 @@ This project uses:
 
 ### Using Docker
 
-1. 
-2. 
-3. 
-4. 
+```sh
+$ docker-compose up 
+```
 
 ## Usage
 
-1.
-2.
-3.
-4.
+### Using Docker
+
+```sh
+$ docker-compose up
+```
+### Manual usage
+
+```python
+python run.py
+```
+
 
 | URL                      | Method | Endpoint      | Usage                        |
 | ------------------------ | ------ | ------------- |----------------------------- | 
@@ -61,16 +66,21 @@ This project uses:
 
 with JSON:
 
-curl -i -H "Accept: application/json" -H "Content-Type: application/json" -X GET http://hostname/resource
+```sh
+$ curl -i -H "Accept: application/json" -H "Content-Type: application/json" -X GET http://hostname/resource
+```
 
 with XML:
 
-curl -H "Accept: application/xml" -H "Content-Type: application/xml" -X GET http://hostname/resource
-
+```sh
+$ curl -H "Accept: application/xml" -H "Content-Type: application/xml" -X GET http://hostname/resource
+```
 
 * POST
 
+```sh
 curl --data "param1=value1&param2=value2" http://hostname/resource
+```
 
 ## Credits
 
