@@ -46,16 +46,13 @@ This project uses:
 3.
 4.
 
-
-========================  ======  =============  ===========================
-URL                       method  endpoint       Usage
-========================  ======  =============  ===========================
-/persons                  GET     person_list    Get a collection of persons
-/persons                  POST    person_list    Create a person
-/persons/<int:person_id>  GET     person_detail  Get person details
-/persons/<int:person_id>  PATCH   person_detail  Update a person
-/persons/<int:person_id>  DELETE  person_detail  Delete a person
-========================  ======  =============  ===========================
+| URL                      | Method | Endpoint      | Usage                        |
+| ------------------------ | ------ | ------------- |----------------------------- | 
+| /persons                 | GET    | person_list   | Get a collection of persons  |
+| /persons                 | POST   | person_list	| Create a person			   |
+| /persons/<int:person_id> | GET    | person_detail	| Get person detail			   |
+| /persons/<int:person_id> | PATCH  | person_detail	| Update a person              |
+| /persons/<int:person_id> | DELETE | person_detail	| Delete a person              |
 
 
 ### Petition on *nix os
