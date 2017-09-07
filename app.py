@@ -15,8 +15,21 @@ db = SQLAlchemy(app)
 # Create model
 class Person(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    #name = db.Column(db.String)
+    #comuna = db.Column(db.String)
+    region = db.Column(db.Integer)
 
+'''
+class Attribute(db.Model):
+	id = db.Column(db.Integer, primary_key=True)
+	name = db.Column(db.String)
+	value = db.Column(db.Integer)
+'''
+
+'''
+class Dimension(db.Model):
+	id = db.Column(db.Integer, primary_key=True)
+	name = db.Column(db.String)
+'''
 
 # Create the database
 db.create_all()
