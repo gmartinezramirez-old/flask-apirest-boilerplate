@@ -1,12 +1,9 @@
-version: '3'
+version: '3'  # version of compose format 
 
 services:
-    web:
-        build: .
-        ports:
-            - "5000:5000"
-        volumes:
-            - .:/code
-        depends_on:
-            - redis
-
+  volunteers-selection-backend-service:
+    build: ./volunteers_selection-backend  # path is relative to docker-compose.yml location
+    volumes:
+      - ./volunteers_selection-backend:/usr/src/app # mount point
+    ports:
+      - 5001:80  # host:container
