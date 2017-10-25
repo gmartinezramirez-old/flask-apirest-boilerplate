@@ -1,9 +1,30 @@
-version: '3'  # version of compose format 
-
-services:
-  volunteers-selection-backend-service:
-    build: ./volunteers_selection-backend  # path is relative to docker-compose.yml location
-    volumes:
-      - ./volunteers_selection-backend:/usr/src/app # mount point
-    ports:
-      - 5001:80  # host:container
+api:
+  build: .
+  command: python /code/app/src/app.py
+  ports:
+   - "8082:8082"
+  volumes:
+   - .:/code
+  links:
+   - db
+  hostname: myappserver
+db:
+  hostname: mysqlserver
+  image: orchardup/mysql
+  environment:
+     MYSQL_ROOT_PASSWORD: citiaps2017
+     MYSQL_DATABASE: waynakay
+phpmyadmin:
+  image: phpmyadmin/phpmyadmin
+  links:
+    - db:db
+  ports:
+    - "80:80"
+  environment:
+    PMA_ARBITRARY: 1
+    PMA_HOST: db
+    PMA_PORT: 3306
+    MYSQL_USER: root
+    MYSQL_PASSWORD: citiaps2017
+    MYSQL_ROOT_PASSWORD: root
+    MYSQL_DATABASE: waynakay
