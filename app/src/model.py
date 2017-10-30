@@ -14,7 +14,10 @@ PASSWORD = 'citiaps2017'
 USER = 'root'
 HOSTNAME = 'mysqlserver'
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://%s:%s@%s/%s' % (USER, PASSWORD, HOSTNAME, DATABASE)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://%s:%s@%s/%s' % (USER,
+                                                                 PASSWORD,
+                                                                 HOSTNAME,
+                                                                 DATABASE)
 db = SQLAlchemy(app)
 
 # Database migration command line
@@ -22,25 +25,42 @@ migrate = Migrate(app, db)
 manager = Manager(app)
 manager.add_command('db', MigrateCommand)
 
-
 participation = db.Table('participation',
-                         db.Column('announcement_id', db.Integer, db.ForeignKey('announcement.id'), primary_key=True),
-                         db.Column('volunteer_id', db.Integer, db.ForeignKey('volunteer.id'), primary_key=True)
-                         )
-
+                         db.Column(
+                             'announcement_id',
+                             db.Integer,
+                             db.ForeignKey('announcement.id'),
+                             primary_key=True),
+                         db.Column(
+                             'volunteer_id',
+                             db.Integer,
+                             db.ForeignKey('volunteer.id'),
+                             primary_key=True))
 
 template_have_attribute = db.Table('template_have_attribute',
-                         db.Column('template_id', db.Integer, db.ForeignKey('template.id'), primary_key=True),
-                         db.Column('attribute_id', db.Integer, db.ForeignKey('attribute.id'), primary_key=True)
-                         )
-
+                                   db.Column(
+                                       'template_id',
+                                       db.Integer,
+                                       db.ForeignKey('template.id'),
+                                       primary_key=True),
+                                   db.Column(
+                                       'attribute_id',
+                                       db.Integer,
+                                       db.ForeignKey('attribute.id'),
+                                       primary_key=True))
 
 # Temporary
 criterion_have_attribute = db.Table('criterion_have_attribute',
-                         db.Column('criterion_id', db.Integer, db.ForeignKey('criterion.id'), primary_key=True),
-                         db.Column('attribute_id', db.Integer, db.ForeignKey('attribute.id'), primary_key=True)
-                         )
-
+                                    db.Column(
+                                        'criterion_id',
+                                        db.Integer,
+                                        db.ForeignKey('criterion.id'),
+                                        primary_key=True),
+                                    db.Column(
+                                        'attribute_id',
+                                        db.Integer,
+                                        db.ForeignKey('attribute.id'),
+                                        primary_key=True))
 """
 # Temporal: Por ahora asumir que no tienen valores
 volunteer_have_attribute = db.Table('volunteer_have_attribute',
@@ -48,7 +68,6 @@ volunteer_have_attribute = db.Table('volunteer_have_attribute',
                          db.Column('attribute_id', db.Integer, db.ForeignKey('attribute.id'), primary_key=True)
                          )
 """
-
 """
 class Criterion_have_Attribute(db.Model):
     __tablename__ = 'criterion_have_attribute'
@@ -58,15 +77,14 @@ class Criterion_have_Attribute(db.Model):
     attribute = db.relationship("Attribute")
 """
 
-
 Volunteer = db.Table('volunteer',
                      db.Column('id', db.Integer, primary_key=True),
                      db.Column('volunteer_id', db.Integer),
-                     db.Column('attribute_id', db.Integer, db.ForeignKey('attribute.id'), primary_key=True),
-                     db.Column('value', db.Integer)
-                     )
-
-
+                     db.Column(
+                         'attribute_id',
+                         db.Integer,
+                         db.ForeignKey('attribute.id'),
+                         primary_key=True), db.Column('value', db.Integer))
 """ # TODO
 class Volunteer_Attribute(db.Model):
     __tablename__ = 'volunteer_attribute'
@@ -76,6 +94,7 @@ class Volunteer_Attribute(db.Model):
     value = db.Column(db.Integer)
 """
 
+
 class Announcement(db.Model):
     __tablename__ = 'announcement'
     id = db.Column(db.Integer, primary_key=True, nullable=False)
@@ -84,9 +103,11 @@ class Announcement(db.Model):
     selected = db.Column(db.Integer)
     createdAt = db.Column(db.Integer)
     description = db.Column(db.String(80))
-    template_id = db.Column(db.Integer, db.ForeignKey('template.id'), nullable=False)
+    template_id = db.Column(
+        db.Integer, db.ForeignKey('template.id'), nullable=False)
 
-    def __init__(self, title, required, selected, createdAt, description, template_id):
+    def __init__(self, title, required, selected, createdAt, description,
+                 template_id):
         self.title = title
         self.required = required
         self.selected = selected
@@ -103,13 +124,18 @@ class Template(db.Model):
     id = db.Column(db.Integer, primary_key=True, nullable=False)
     name = db.Column(db.String(80))
     criterions = db.relationship("Criterion", backref="template", lazy=True)
-    announcements = db.relationship("Announcement", backref="template", lazy=True)
-    attributes = db.relationship('Attribute', secondary=template_have_attribute, lazy='subquery',backref=db.backref('templates', lazy=True))
+    announcements = db.relationship(
+        "Announcement", backref="template", lazy=True)
+    attributes = db.relationship(
+        'Attribute',
+        secondary=template_have_attribute,
+        lazy='subquery',
+        backref=db.backref('templates', lazy=True))
 
     def __init__(self, name):
         self.name = name
 
-    def __init__(self, name, criterions= []):
+    def __init__(self, name, criterions=[]):
         self.name = name
         self.criterions = criterions
 
@@ -122,8 +148,13 @@ class Criterion(db.Model):
     id = db.Column(db.Integer, primary_key=True, nullable=False)
     name = db.Column(db.String(80))
     value = db.Column(db.Integer)
-    template_id = db.Column(db.Integer, db.ForeignKey('template.id'), nullable=False)
-    attributes = db.relationship('Attribute', secondary=criterion_have_attribute, lazy='subquery',backref=db.backref('criterion', lazy=True))
+    template_id = db.Column(
+        db.Integer, db.ForeignKey('template.id'), nullable=False)
+    attributes = db.relationship(
+        'Attribute',
+        secondary=criterion_have_attribute,
+        lazy='subquery',
+        backref=db.backref('criterion', lazy=True))
 
     def __init__(self, name, value, template_id):
         self.name = name
@@ -138,7 +169,8 @@ class Attribute(db.Model):
     __tablename__ = 'attribute'
     id = db.Column(db.Integer, primary_key=True, nullable=False)
     name = db.Column(db.String(80))
-    originalattribute_id = db.Column(db.Integer, db.ForeignKey('originalattribute.id'), nullable=False)
+    originalattribute_id = db.Column(
+        db.Integer, db.ForeignKey('originalattribute.id'), nullable=False)
 
     def __init__(self, name):
         self.name = name
@@ -151,7 +183,9 @@ class Originalattribute(db.Model):
     __tablename__ = 'originalattribute'
     id = db.Column(db.Integer, primary_key=True, nullable=False)
     name = db.Column(db.String(80))
-    attributes = db.relationship('Attribute', backref='originalattribute', lazy=True)
+    attributes = db.relationship(
+        'Attribute', backref='originalattribute', lazy=True)
+
 
 """
 # TODO
@@ -161,6 +195,7 @@ class Volunteer(db.Model):
     #name = db.Column(db.String(80))
     #attributes = db.relationship('Attribute', backref='originalattribute', lazy=True)
 """
+
 
 # TODO: Very bad fix, but is temporal (CRITICAL)
 class VolunteerTemp(db.Model):
@@ -174,8 +209,11 @@ class CreateDB():
         if hostname != None:
             HOSTNAME = hostname
         import sqlalchemy
-        engine = sqlalchemy.create_engine('mysql://%s:%s@%s' % (USER, PASSWORD, HOSTNAME))  # connect to server
-        engine.execute("CREATE DATABASE IF NOT EXISTS %s " % (DATABASE))  # create db
+        engine = sqlalchemy.create_engine('mysql://%s:%s@%s' %
+                                          (USER, PASSWORD,
+                                           HOSTNAME))  # connect to server
+        engine.execute("CREATE DATABASE IF NOT EXISTS %s " %
+                       (DATABASE))  # create db
         # TODO: Automatize create tables
         #db.create_all()
 
