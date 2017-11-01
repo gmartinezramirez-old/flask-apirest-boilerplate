@@ -190,6 +190,15 @@ def api_message():
         return "415 Unsupported Media Type ;)"
 
 
+@app.route('/api/v1.0/http_args', methods=['GET'])
+def https_args():
+    if 'name' in request.args:
+        name = request.args.get("name")
+        return jsonify({'name': name})
+    else:
+        abort(400)
+
+
 @app.route('/api/v1.0/users/<userid>', methods=['GET'])
 def api_users(userid):
     users = {'1': 'john', '2': 'steve', '3': 'bill'}
